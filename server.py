@@ -1,3 +1,4 @@
+
 import socket
 
 def Main():
@@ -11,7 +12,7 @@ def Main():
     serverSocket = socket.socket()
     serverSocket.bind((host, port))
 
-    serverSocket.listen(1)
+    serverSocket.listen(5)
 
     conn, addr = serverSocket.accept()
 

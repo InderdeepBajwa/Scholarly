@@ -1,7 +1,7 @@
 import socket
 
 def Main():
-    host = '0.0.0.0'
+    host = '192.168.137.1'
     port = 8081
 
     clientSocket = socket.socket()
@@ -19,6 +19,6 @@ def Main():
 
     clientSocket.close()
 
-    if __name__ == "__main__":
-         Main()    
+if __name__ == "__main__":
+    Main()  
 
