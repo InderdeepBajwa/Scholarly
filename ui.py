@@ -20,12 +20,14 @@ window.geometry('%dx%d+%d+%d' % (w, h, x, y))
 # window customization
 window.configure(background=_from_rgb((65, 244, 166)))
 
+bgColor = _from_rgb((65, 244, 166))
+
 # title
 window.title("Welcome to Scholarly")
-lbl = tk.Label(window, text="Welcome to Scholarly", font=("Times New Roman", 50), bg=_from_rgb((65, 244, 166)))
+lbl = tk.Label(window, text="Welcome to Scholarly", font=("Times New Roman", 50), bg=bgColor)
 lbl.place(relx=0.5, rely=0.1, anchor=tk.CENTER)
-tk.Label(window, text="Login to continue", font=("Times New Roman", 24), bg=_from_rgb((65, 244, 166))).place(relx=0.5, rely=0.3, anchor=tk.CENTER)
-wlcmUsrLbl = tk.Label(window, text="An interesting name goes below", font=("Times New Roman", 16), bg=_from_rgb((65, 244, 166)))
+tk.Label(window, text="Login to continue", font=("Times New Roman", 24), bg=bgColor).place(relx=0.5, rely=0.3, anchor=tk.CENTER)
+wlcmUsrLbl = tk.Label(window, text="An interesting name goes below", font=("Times New Roman", 16), bg=bgColor)
 wlcmUsrLbl.place(relx=0.5, rely=0.4, anchor=tk.CENTER)
 
 # getting user input
