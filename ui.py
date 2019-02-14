@@ -36,13 +36,7 @@ userName.place(relx=0.5, rely=0.45, anchor=tk.CENTER)
 submitButton = tk.Button(window, text="Introduce me to cool people")
 submitButton.place(relx=0.5, rely=0.55, anchor=tk.CENTER)
 
-# defining exit function
-def close_window():
-    window.destroy()
-    exit()
 # exit button
-tk.Button(window, text="Exit", command=close_window).place(relx=0.9, rely=0.9, anchor=tk.CENTER)
-
-
+tk.Button(window, text="Exit").place(relx=0.9, rely=0.9, anchor=tk.CENTER)
 
 window.mainloop()
