@@ -1,44 +1,89 @@
-
 import tkinter as tk
 from ui_funcs import _from_rgb
 
-window = tk.Tk()
+class window(tk.Tk):
 
-ws = window.winfo_screenwidth()
-hs = window.winfo_screenheight()
+    def __init__(self, *args, **kwargs):
+        tk.Tk.__init__(self, *args, **kwargs)
+        container = tk.Frame(self)
 
-# Assigning window dimensions
-w = 1024
-h = 720
-# calculate x and y coordinates for the Window
-x = (ws/2) - (w/2)
-y = (hs/2) - (h/2)
+        container.pack(side="top", fill="both", expand = True)
+        
+        container.grid_rowconfigure(0, weight=1)
+        container.grid_columnconfigure(0, weight=1)
 
-# setting the dimensions of the screen and where it is placed
-window.geometry('%dx%d+%d+%d' % (w, h, x, y))
+        self.frames = {}
 
-# window customization
-window.configure(background=_from_rgb((65, 244, 166)))
+        for F in (StartPage, Chat):
 
-bgColor = _from_rgb((65, 244, 166))
+            frame = F(container, self)
 
-# title
-window.title("Welcome to Scholarly")
-lbl = tk.Label(window, text="Welcome to Scholarly", font=("Times New Roman", 50), bg=bgColor)
-lbl.place(relx=0.5, rely=0.1, anchor=tk.CENTER)
-tk.Label(window, text="Login to continue", font=("Times New Roman", 24), bg=bgColor).place(relx=0.5, rely=0.3, anchor=tk.CENTER)
-wlcmUsrLbl = tk.Label(window, text="An interesting name goes below", font=("Times New Roman", 16), bg=bgColor)
-wlcmUsrLbl.place(relx=0.5, rely=0.4, anchor=tk.CENTER)
+            self.frames[F] = frame
 
-# getting user input
-userName = tk.Entry(window, width = 30)
-userName.place(relx=0.5, rely=0.45, anchor=tk.CENTER)
+            frame.grid(row=0, column=0, sticky="nsew")
 
-# submit button
-submitButton = tk.Button(window, text="Introduce me to cool people")
-submitButton.place(relx=0.5, rely=0.55, anchor=tk.CENTER)
+        self.show_frame(StartPage)
+    
+    def show_frame(self, cont):
 
-# exit button
-tk.Button(window, text="Exit").place(relx=0.9, rely=0.9, anchor=tk.CENTER)
+        frame = self.frames[cont]
+        frame.tkraise()
 
-window.mainloop()
+class StartPage(tk.Frame):
+
+    def __init__(self, parent, controller):
+
+
+        #Enter your name
+        tk.Frame.__init__(self,parent)
+        label1 = tk.Label(self, text="Enter Your Name Below")
+        #label1.pack()
+        label1.place(relx=0.5, rely=0.40, anchor=tk.CENTER)
+       
+        
+        #Text box for username entry
+        e = tk.Entry(self)
+        e.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+        s = e.get()
+
+        #Enter button
+        button1 = tk.Button(self, text="Enter", command=lambda: controller.show_frame(Chat))
+        button1.place(relx=0.5, rely=0.60, anchor=tk.CENTER)
+    
+    
+
+class Chat(tk.Frame):
+
+    def __init__(self, parent, controller):
+
+        #Online label
+        tk.Frame.__init__(self,parent)
+        label1 = tk.Label(self, text="Online")
+        label1.place(relx=0.05, rely=0.05, anchor=tk.CENTER)
+        #label1.place(x=1, y=1)
+
+        #listbox of online members
+        listbox = tk.Listbox(self)
+        listbox.place(relx=0.19, rely= 0.25, anchor=tk.CENTER)
+        #listbox.place(x=2,y=5)
+
+        #listbox of chat messages
+        listbox2 = tk.Listbox(self)
+        listbox2.place(relx=0.67, rely=0.3777, anchor=tk.CENTER, width=275, height=300)
+
+        #Return to login screen (log out)
+        button1 = tk.Button(self, text="Log Out", command=lambda: controller.show_frame(StartPage))
+        button1.place(relx=0.9, rely=0.05, anchor=tk.CENTER)
+
+        #Send button
+        button2 = tk.Button(self, text="Send")
+        button2.place(relx=0.9, rely=0.72, anchor=tk.CENTER)
+
+        #Entry field
+        e = tk.Entry(self)
+        e.place(relx=0.6, rely= 0.72, anchor=tk.CENTER, width=260)
+
+
+app = window()
+app.geometry("500x500")
+app.mainloop()
