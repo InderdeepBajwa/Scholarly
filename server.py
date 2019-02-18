@@ -1,35 +1,51 @@
 
 import socket
+import pyaudio
+import select
 
-def Main():
-    # host IP
-    host = "0.0.0.0"
-    # port number
-    port = 8081
+FORMAT = pyaudio.paInt16
+CHANNELS = 3
+RATE = 44100
+CHUNK = 4096
 
-    print(socket.gethostname())
+audio = pyaudio.PyAudio()
 
-    serverSocket = socket.socket()
-    serverSocket.bind((host, port))
+# Initializing TCP socket
+serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+serversocket.bind(('', 8981))
+serversocket.listen(5)
 
-    serverSocket.listen(5)
+def callback(in_data, frame_count, time_info, status):
+    for s in read_list[1:]:
+        s.send(in_data)
+    return (None, pyaudio.paContinue)
 
-    conn, addr = serverSocket.accept()
+# start Recording
+stream = audio.open(format=FORMAT, channels=CHANNELS, rate=RATE, input=True, frames_per_buffer=CHUNK, stream_callback=callback)
+# stream.start_stream()
 
-    print("connection from: " + str(addr))
+read_list = [serversocket]
+print("Listening Now ...")
 
+try:
     while True:
-        data = conn.recv(1024).decode()
-        if not data:
-            break
-        print("ffrom connected user: " + str(data))
+        readable, writable, errored = select.select(read_list, [], [])
+        for s in readable:
+            if s is serversocket:
+                (clientsocket, address) = serversocket.accept()
+                read_list.append(clientsocket)
+                print("Connection from", address)
+            else:
+                data = s.recv(1024)
+                if not data:
+                    read_list.remove(s)
+except KeyboardInterrupt:
+    pass
 
-        data = str(data).upper()
+print("finished recording")
 
-        print("sending: " + str(data))
-        conn.send(data.encode())
-
-    conn.close()
-
-if __name__ == "__main__":
-    Main()
+serversocket.close()
+# stop Recording
+stream.stop_stream()
+stream.close()
+audio.terminate()

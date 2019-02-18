@@ -22,3 +22,4 @@ class loginPage(tk.Frame, window):
         # getting user input
         userName = tk.Entry(window, width = 30)
         userName.place(relx=0.5, rely=0.45, anchor=tk.CENTER)
+
