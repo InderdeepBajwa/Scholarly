@@ -1,6 +1,7 @@
 import tkinter as tk
 from ui_funcs import _from_rgb
 from clientSocketConnection import *
+from threading import Thread
 
 # Global variables
 USERIP = ''
@@ -69,8 +70,9 @@ class Chat(tk.Frame):
     def __init__(self, parent, controller):
         #Online label
         tk.Frame.__init__(self,parent)
-
-        self.getUsername()
+        # TODO: DO the USERNAME implementation  
+        global USERNAME
+        print(USERNAME)
         label1 = tk.Label(self, text=  " - Online")
         label1.place(relx=0.05, rely=0.05, anchor=tk.CENTER)
         #label1.place(x=1, y=1)
