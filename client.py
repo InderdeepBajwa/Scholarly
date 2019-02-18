@@ -91,12 +91,13 @@ class Chat(tk.Frame):
         button1.place(relx=0.9, rely=0.05, anchor=tk.CENTER)
 
         #Send button
-        button2 = tk.Button(self, text="Send")
+        button2 = tk.Button(self, text="Send", command=sendMessage)
         button2.place(relx=0.9, rely=0.72, anchor=tk.CENTER)
 
-        #Entry field
+        # Message field
         e = tk.Entry(self)
         e.place(relx=0.6, rely= 0.72, anchor=tk.CENTER, width=260)
+        
         
         makeSocketConnection(USERIP, USERPORT)
     
@@ -108,10 +109,13 @@ class Chat(tk.Frame):
 
 # UI ends here
 
-# PyAudio configuration
-
 
 app = window()
 app.title("Welcome to Scholarly App")
 app.geometry("600x600")
+
+
+
+
+
 app.mainloop()

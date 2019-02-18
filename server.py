@@ -3,6 +3,7 @@ import socket
 import pyaudio
 import select
 
+
 FORMAT = pyaudio.paInt16
 CHANNELS = 3
 RATE = 44100
@@ -15,6 +16,8 @@ serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 serversocket.bind(('', 8981))
 serversocket.listen(5)
 
+import serverSocketConnection
+
 def callback(in_data, frame_count, time_info, status):
     for s in read_list[1:]:
         s.send(in_data)
@@ -23,6 +26,11 @@ def callback(in_data, frame_count, time_info, status):
 # start Recording
 stream = audio.open(format=FORMAT, channels=CHANNELS, rate=RATE, input=True, frames_per_buffer=CHUNK, stream_callback=callback)
 # stream.start_stream()
+
+print("Waiting for connection...")
+ACCEPT_THREAD = Thread(target=acceptIncomingConnection)
+ACCEPT_THREAD.start()
+ACCEPT_THREAD.join()
 
 read_list = [serversocket]
 print("Listening Now ...")
